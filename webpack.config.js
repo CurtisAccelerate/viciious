@@ -1,24 +1,30 @@
-const path                          = require("path");
-const HtmlWebpackPlugin             = require("html-webpack-plugin");
-const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
-const { CleanWebpackPlugin }        = require("clean-webpack-plugin");
-const MiniCssExtractPlugin          = require("mini-css-extract-plugin");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = [
-
   // Development
   {
-    name:    "web-dev",
-    target:  "web",
-    mode:    "development",
-    entry:   "./src/entry/web-dev.js",
+    name: "web-dev",
+    target: "web",
+    mode: "development",
+    entry: "./src/entry/web-dev.js",
     devtool: "inline-source-map",
     devServer: {
-      static: "./dist/web-dev",
+      static: [
+        {
+          directory: path.join(__dirname, "public"),
+        },
+        {
+          directory: path.join(__dirname, "dist/web-dev"),
+        },
+      ],
+      port: 8080,
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title:    "Viciious – dev",
+        title: "Viciious – dev",
         template: "src/host/webFrontEnd/template.ejs",
       }),
       new MiniCssExtractPlugin(),
@@ -37,36 +43,31 @@ module.exports = [
     },
     output: {
       path: path.resolve(__dirname, "dist/web-dev"),
+      filename: "[name].bundle.js",
     },
   },
 
   // Distributable single-HTML-file bundle
   {
-    name:   "web-prod",
+    name: "web-prod",
     target: "web",
-    mode:   "production",
-    entry:  "./src/entry/web-prod.js",
+    mode: "production",
+    entry: "./src/entry/web-prod.js",
     performance: {
-      // This is an app, not a traditional web page. Let's relax the size
-      // warnings.
-      maxAssetSize:      (2 * 1048576),
-      maxEntrypointSize: (2 * 1048576),
+      maxAssetSize: 2 * 1048576,
+      maxEntrypointSize: 2 * 1048576,
     },
     plugins: [
       new CleanWebpackPlugin({
-        // We use the HtmlWebpackInlineSourcePlugin to bundle the whole app
-        // into the viciious.html file, but webpack will have also emitted the
-        // separate JavaScript and CSS files. Delete them.
         protectWebpackAssets: false,
         cleanAfterEveryBuildPatterns: ["main.js", "main.css"],
       }),
       new HtmlWebpackPlugin({
-        title:        "Viciious",
+        title: "Viciious",
         inlineSource: "\\.(js|css)$",
-        template:     "src/host/webFrontEnd/template.ejs",
-        filename:     "viciious.html",
+        template: "src/host/webFrontEnd/template.ejs",
+        filename: "viciious.html",
       }),
-      new HtmlWebpackInlineSourcePlugin(),
       new MiniCssExtractPlugin(),
     ],
     module: {
@@ -83,15 +84,16 @@ module.exports = [
     },
     output: {
       path: path.resolve(__dirname, "dist/web-prod"),
+      filename: "[name].bundle.js",
     },
   },
 
-  // A novelty command-line version of the emulator 
+  // A novelty command-line version of the emulator
   {
-    name:   "node-prod",
+    name: "node-prod",
     target: "node",
-    mode:   "production",
-    entry:  "./src/entry/node.js",
+    mode: "production",
+    entry: "./src/entry/node.js",
     plugins: [
       new CleanWebpackPlugin(),
     ],
@@ -103,10 +105,10 @@ module.exports = [
 
   // A test executor that runs through the Wolfgang Lorenz test suite
   {
-    name:   "test-lorenz",
+    name: "test-lorenz",
     target: "node",
-    mode:   "production",
-    entry:  "./src/entry/test-lorenz.js",
+    mode: "production",
+    entry: "./src/entry/test-lorenz.js",
     output: {
       filename: "lorenz.js",
       path: path.resolve(__dirname, "dist/test"),
