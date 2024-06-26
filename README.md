@@ -112,6 +112,14 @@ The cursor keys also, by default, control a virtual joystick plugged into Contro
 
 As well as dropping program files into the browser window to boot them, you can drop in snapshot files. Take a snapshot using the UI; then, to save it, find the underlined link beneath its screen preview, and use your browser’s right-click menu to save the link to your filesystem.
 
+## Fork Details
+
+- Added F1 speed up
+- Added typePet asynch for sending data to emulator
+- Added file load of turbo asm program automatically
+- Serving public folder and add tasm.prg
+  
+
 ## Licensing
 
 The emulation code and UI assets in Viciious were authored from scratch and placed in the public domain.
