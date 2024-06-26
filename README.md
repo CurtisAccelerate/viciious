@@ -117,7 +117,7 @@ As well as dropping program files into the browser window to boot them, you can 
 - Added F1 speed up
 - Added typePet asynch for sending data to emulator
 - Added file load of turbo asm program automatically
-- Serving public folder and add tasm.prg
+- Serving public folder and add turbo asm turbo.prg for sending data for cross assembly
   
 
 ## Licensing
