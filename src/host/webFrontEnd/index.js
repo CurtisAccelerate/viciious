@@ -14,9 +14,29 @@ import { initJoystickDialog } from "./joystickDialog";
 import { initKeyMapDialog }   from "./keyMapDialog";
 import { initLoaderDialog }   from "./loaderDialog";
 import { initDiskDialog }     from "./diskDialog";
+import { setSpeed } from "../../target/runloop"; // Import the setSpeed function
+
 
 // A development aid. Don't commit with this turned on.
 const pauseOnMenus = false;
+
+
+let speedOptions = [20, 1];
+let currentSpeedIndex = 0;
+
+function cycleSpeed() {
+  currentSpeedIndex = (currentSpeedIndex + 1) % speedOptions.length;
+  setSpeed(speedOptions[currentSpeedIndex]);
+  console.log(`Speed set to ${speedOptions[currentSpeedIndex]}x`);
+}
+
+
+// Add event listener for key press to cycle speed
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'F1') { // Use F1 key to avoid conflicts with common C64 keys
+    cycleSpeed();
+  }
+});
 
 export function attach(nascentC64) {
   const c64 = nascentC64;
